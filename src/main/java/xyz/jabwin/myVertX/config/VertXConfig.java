@@ -35,7 +35,7 @@ public class VertXConfig
       .setPassword("88888888")
       .setDatabase("publicity_project")
       ;
-    PoolOptions poolOptions = new PoolOptions().setMaxSize(4);
+    PoolOptions poolOptions = new PoolOptions().setMaxSize(10);
     return MySQLPool.pool(vertx, options, poolOptions);
   }
 

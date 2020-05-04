@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class MainVerticle extends AbstractVerticle
+public class HttpVerticle extends AbstractVerticle
 {
   private EventBus eventBus;
   private Router router;

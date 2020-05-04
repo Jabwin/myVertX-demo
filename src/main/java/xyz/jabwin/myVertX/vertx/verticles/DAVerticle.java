@@ -55,19 +55,20 @@ public class DAVerticle extends AbstractVerticle
       if (res1.failed()) return;
       SqlConnection connection = res1.result();
 
-      connection.preparedQuery("insert into system_user (name) values (?);")
-        .execute(Tuple.of(json.getString("name")), rs ->
-        {
-          if (rs.failed())
-          {
-            msg.fail(500, "false");
-            connection.close();
-            return;
-          }
-          log.info("chenggong");
-          msg.reply("ok");
-          connection.close();
-        });
+      connection
+              .preparedQuery("insert into system_user (name) values (?);")
+              .execute(Tuple.of(json.getString("name")), rs ->
+              {
+                if (rs.failed())
+                {
+                  msg.fail(500, "false");
+                  connection.close();
+                  return;
+                }
+                log.info("chenggong");
+                msg.reply("ok");
+                connection.close();
+              });
     });
   }
   public void testHandler(RoutingContext routingContext)
