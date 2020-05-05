@@ -9,6 +9,7 @@ import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.PoolOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import xyz.jabwin.myVertX.pojo.TCPMsg;
 
 /*************************************************************
  * 类：
@@ -48,7 +49,7 @@ public class VertXConfig
   @Bean
   public EventBus eventBus(Vertx vertx)
   {
-    return vertx.eventBus();
+    return vertx.eventBus().registerDefaultCodec(TCPMsg.class, new MsgCodec());
   }
 
 }

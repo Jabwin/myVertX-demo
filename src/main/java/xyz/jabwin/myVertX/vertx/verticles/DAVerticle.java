@@ -7,6 +7,8 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.net.NetServer;
+import io.vertx.core.net.NetSocket;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -16,6 +18,7 @@ import io.vertx.sqlclient.Tuple;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import xyz.jabwin.myVertX.pojo.TCPMsg;
 
 import javax.annotation.PostConstruct;
 
@@ -25,14 +28,10 @@ import javax.annotation.PostConstruct;
  *************************************************************
  */
 @Slf4j
-@Component
-@AllArgsConstructor
 public class DAVerticle extends AbstractVerticle
 {
   private Pool mysqlPool;
-  private Router router;
   private EventBus eventBus;
-  private Vertx vertx;
 
   @PostConstruct
   public void init()
@@ -43,8 +42,9 @@ public class DAVerticle extends AbstractVerticle
   @Override
   public void start()
   {
+    eventBus = vertx.eventBus();
+
     eventBus.consumer("/test", this::msgHandler);
-    router.route(HttpMethod.POST, "/test2").handler(BodyHandler.create()).handler(this::testHandler);
   }
 
   public void msgHandler(Message<JsonObject> msg)
@@ -71,9 +71,11 @@ public class DAVerticle extends AbstractVerticle
               });
     });
   }
-  public void testHandler(RoutingContext routingContext)
+
+
+
+  public void testHandler(Message<JsonObject> msg)
   {
     log.info("成功222");
-    routingContext.response().end("ok");
   }
 }
