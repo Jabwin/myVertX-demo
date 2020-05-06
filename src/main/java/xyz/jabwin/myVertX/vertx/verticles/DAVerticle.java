@@ -30,21 +30,15 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class DAVerticle extends AbstractVerticle
 {
-  private Pool mysqlPool;
+  public static Pool mysqlPool;
   private EventBus eventBus;
-
-  @PostConstruct
-  public void init()
-  {
-    vertx.deployVerticle(this, new DeploymentOptions().setWorker(true));
-  }
 
   @Override
   public void start()
   {
     eventBus = vertx.eventBus();
 
-    eventBus.consumer("/test", this::msgHandler);
+    eventBus.consumer("/test", this::testHandler);
   }
 
   public void msgHandler(Message<JsonObject> msg)
@@ -74,8 +68,10 @@ public class DAVerticle extends AbstractVerticle
 
 
 
-  public void testHandler(Message<JsonObject> msg)
+  public void testHandler(Message<TCPMsg> msg)
   {
-    log.info("成功222");
+    msg.reply("ok");
+    TCPMsg tcpMsg = msg.body();
+    tcpMsg.getRoutingContext().response().end("asdjfklasjdk");
   }
 }

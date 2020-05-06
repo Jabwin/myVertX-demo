@@ -13,6 +13,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import xyz.jabwin.myVertX.pojo.TCPMsg;
 
 import javax.annotation.PostConstruct;
 
@@ -35,6 +36,8 @@ public class HttpVerticle extends AbstractVerticle
   public void start(Promise<Void> startPromise)
   {
     router.route(HttpMethod.POST, "/test").handler(BodyHandler.create()).handler(this::testHandler);
+    router.route(HttpMethod.GET, "/test/app/valuationConf/getServerCarTypeAndPrice")
+            .handler(this::getServerCarTypeAndPrice);
     vertx.createHttpServer().requestHandler(router).listen(8888, http ->
     {
       if (http.succeeded())
@@ -44,16 +47,16 @@ public class HttpVerticle extends AbstractVerticle
       }
       else startPromise.fail(http.cause());
     });
+    vertx.deployVerticle(DAVerticle::new, new DeploymentOptions().setWorker(true));
   }
 
   private void testHandler(RoutingContext routingContext)
   {
-    HttpServerResponse resp = routingContext.response();
-    eventBus.<String>request("/test", routingContext.getBodyAsJson(), msg ->
-    {
-      log.info("成功");
-      if (msg.failed()) resp.end(msg.cause().getMessage());
-      else resp.end(msg.result().body());
-    });
+    eventBus.<String>request("/test", new TCPMsg().setRoutingContext(routingContext));
+  }
+
+  private void getServerCarTypeAndPrice(RoutingContext routingContext)
+  {
+
   }
 }

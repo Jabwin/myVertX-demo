@@ -1,6 +1,7 @@
 package xyz.jabwin.myVertX.pojo;
 
 import io.vertx.core.net.NetSocket;
+import io.vertx.ext.web.RoutingContext;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,4 +19,5 @@ public class TCPMsg implements Serializable
     private String uuid;
     private String msg;
     private NetSocket socket;
+    RoutingContext routingContext;
 }
