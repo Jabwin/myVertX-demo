@@ -47,7 +47,8 @@ public class HttpVerticle extends AbstractVerticle
       }
       else startPromise.fail(http.cause());
     });
-    vertx.deployVerticle(DAVerticle::new, new DeploymentOptions().setWorker(true));
+    vertx.deployVerticle(DAVerticle::new, new DeploymentOptions().setWorker(true).setInstances(3));
+    System.out.println(111);
   }
 
   private void testHandler(RoutingContext routingContext)

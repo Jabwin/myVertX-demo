@@ -71,6 +71,7 @@ public class DAVerticle extends AbstractVerticle
   public void testHandler(Message<TCPMsg> msg)
   {
     msg.reply("ok");
+    log.info("11111");
     TCPMsg tcpMsg = msg.body();
     tcpMsg.getRoutingContext().response().end("asdjfklasjdk");
   }
