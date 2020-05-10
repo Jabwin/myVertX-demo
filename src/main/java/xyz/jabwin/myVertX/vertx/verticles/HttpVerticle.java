@@ -48,6 +48,7 @@ public class HttpVerticle extends AbstractVerticle
       else startPromise.fail(http.cause());
     });
     vertx.deployVerticle(DAVerticle::new, new DeploymentOptions().setWorker(true).setInstances(3));
+    vertx.deployVerticle(NavMapVerticle::new, new DeploymentOptions());
     System.out.println(111);
   }
 
