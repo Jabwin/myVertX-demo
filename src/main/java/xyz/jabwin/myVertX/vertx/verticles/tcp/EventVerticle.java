@@ -1,8 +1,8 @@
 package xyz.jabwin.myVertX.vertx.verticles.tcp;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
+import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.eventbus.EventBus;
+import io.vertx.reactivex.core.eventbus.Message;
 import lombok.extern.slf4j.Slf4j;
 import xyz.jabwin.myVertX.pojo.TCPMsg;
 

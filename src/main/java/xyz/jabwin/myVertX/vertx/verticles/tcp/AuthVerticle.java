@@ -1,13 +1,11 @@
 package xyz.jabwin.myVertX.vertx.verticles.tcp;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.net.NetSocket;
+import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.eventbus.EventBus;
+import io.vertx.reactivex.core.eventbus.Message;
+import io.vertx.reactivex.core.net.NetSocket;
 import lombok.extern.slf4j.Slf4j;
 import xyz.jabwin.myVertX.pojo.TCPMsg;
-import xyz.jabwin.myVertX.vertx.verticles.tcp.TcpVerticle;
 
 import java.util.UUID;
 

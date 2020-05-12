@@ -1,26 +1,14 @@
 package xyz.jabwin.myVertX.vertx.verticles;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.net.NetServer;
-import io.vertx.core.net.NetSocket;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.sqlclient.Pool;
-import io.vertx.sqlclient.SqlConnection;
-import io.vertx.sqlclient.Tuple;
-import lombok.AllArgsConstructor;
+import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.eventbus.EventBus;
+import io.vertx.reactivex.core.eventbus.Message;
+import io.vertx.reactivex.sqlclient.Pool;
+import io.vertx.reactivex.sqlclient.SqlConnection;
+import io.vertx.reactivex.sqlclient.Tuple;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import xyz.jabwin.myVertX.pojo.TCPMsg;
-
-import javax.annotation.PostConstruct;
 
 /*************************************************************
  * 类：

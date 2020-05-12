@@ -51,18 +51,11 @@ public class DAVerticle extends AbstractVerticle
 
       connection
               .preparedQuery("insert into system_user (name) values (?);")
-              .execute(Tuple.of(json.getString("name")))
-              .onSuccess(rs ->
+              .execute(Tuple.of(json.getString("name")), rs ->
               {
                 log.info("chenggong");
                 msg.reply("ok");
                 connection.close();
-              })
-              .onFailure(fail ->
-              {
-                msg.fail(500, "false");
-                connection.close();
-                return;
               });
     });
   }

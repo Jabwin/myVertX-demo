@@ -1,19 +1,19 @@
 package xyz.jabwin.myVertX.vertx.verticles;
 
-import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpServerResponse;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.Vertx;
+import io.vertx.reactivex.core.eventbus.EventBus;
+import io.vertx.reactivex.ext.web.Router;
+import io.vertx.reactivex.ext.web.RoutingContext;
+import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import xyz.jabwin.myVertX.pojo.TCPMsg;
+import xyz.jabwin.myVertX.pojo.EventMsg;
+import xyz.jabwin.myVertX.pojo.service.MapNavResults;
 
 import javax.annotation.PostConstruct;
 
@@ -35,7 +35,8 @@ public class HttpVerticle extends AbstractVerticle
   @Override
   public void start(Promise<Void> startPromise)
   {
-    router.route(HttpMethod.POST, "/test").handler(BodyHandler.create()).handler(this::testHandler);
+    router.route(HttpMethod.POST, "/invoke")
+            .handler(BodyHandler.create()).handler(this::invokeHandler);
     router.route(HttpMethod.GET, "/test/app/valuationConf/getServerCarTypeAndPrice")
             .handler(this::getServerCarTypeAndPrice);
     vertx.createHttpServer().requestHandler(router).listen(8888, http ->
@@ -51,10 +52,12 @@ public class HttpVerticle extends AbstractVerticle
     vertx.deployVerticle(NavMapVerticle::new, new DeploymentOptions());
     System.out.println(111);
   }
-
-  private void testHandler(RoutingContext routingContext)
+  private void invokeHandler(RoutingContext routingContext)
   {
-    eventBus.<String>request("/test", new TCPMsg().setRoutingContext(routingContext));
+    eventBus.<EventMsg<MapNavResults>>request("/invoke", "" , r ->
+    {
+      routingContext.response().end(r.result().body().getData().toString());
+    });
   }
 
   private void getServerCarTypeAndPrice(RoutingContext routingContext)

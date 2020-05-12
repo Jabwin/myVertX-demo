@@ -1,14 +1,15 @@
 package xyz.jabwin.myVertX.config;
 
-import io.vertx.core.*;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.ext.web.Router;
 import io.vertx.mysqlclient.MySQLConnectOptions;
-import io.vertx.mysqlclient.MySQLPool;
-import io.vertx.sqlclient.Pool;
+import io.vertx.reactivex.core.Vertx;
+import io.vertx.reactivex.core.eventbus.EventBus;
+import io.vertx.reactivex.ext.web.Router;
+import io.vertx.reactivex.mysqlclient.MySQLPool;
+import io.vertx.reactivex.sqlclient.Pool;
 import io.vertx.sqlclient.PoolOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import xyz.jabwin.myVertX.pojo.EventMsg;
 import xyz.jabwin.myVertX.pojo.TCPMsg;
 
 /*************************************************************
@@ -49,7 +50,11 @@ public class VertXConfig
   @Bean
   public EventBus eventBus(Vertx vertx)
   {
-    return vertx.eventBus().registerDefaultCodec(TCPMsg.class, new MsgCodec());
+    EventBus eb = vertx.eventBus();
+    eb.getDelegate()
+            .registerDefaultCodec(TCPMsg.class,new MsgCodec())
+            .registerDefaultCodec(EventMsg.class,new EventMsgCodec());
+    return eb;
   }
 
 }
