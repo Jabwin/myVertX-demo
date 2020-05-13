@@ -34,15 +34,16 @@ public class NavMapVerticle extends AbstractVerticle
     {
         eventBus = vertx.eventBus();
         webClient = WebClient.create(vertx);
-        eventBus.consumer("/invoke", this::invokeHandler);
+        eventBus.consumer("/mapNav", this::mapNavResultsHandler);
     }
 
-    public void invokeHandler(Message<String> message)
+    public void mapNavResultsHandler(Message<JsonObject> message)
     {
+        JsonObject msgJson = message.body();
         webClient
                 .getAbs("https://restapi.amap.com:443/v3/direction/driving")
-                .addQueryParam("origin", "120.374402,36.168923")
-                .addQueryParam("destination", "120.312724,36.064831")
+                .addQueryParam("origin", msgJson.getString("origin"))
+                .addQueryParam("destination", msgJson.getString("destination"))
                 .addQueryParam("strategy", "2")
                 .addQueryParam("key", "56a31478ee2bce15f8a289a854bb40c2")
                 .as(BodyCodec.jsonObject())
