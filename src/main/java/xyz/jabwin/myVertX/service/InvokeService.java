@@ -1,7 +1,6 @@
 package xyz.jabwin.myVertX.service;
 
 import io.reactivex.Single;
-import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.EventBus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +24,10 @@ public class InvokeService
 
     public Single<MapNavResults> getServerCarTypeAndPrice(ServerCarTypeAndPriceDto dto)
     {
-        String origin = dto.getDepartLongitude().toString()
-                + ","
-                + dto.getDepartLatitude().toString();
-        String destination = dto.getDestinationLongitude().toString()
-                + ","
-                + dto.getDestinationLatitude().toString();
-        return mapService.takeMapNavResults(origin, destination);
+        return mapService.takeMapNavResults(
+                dto.getDepartLongitude(),
+                dto.getDepartLatitude(),
+                dto.getDestinationLongitude(),
+                dto.getDestinationLatitude());
     }
-
-
 }

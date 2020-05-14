@@ -27,7 +27,7 @@
     <vertx.version>3.9.0</vertx.version>
     <junit-jupiter.version>5.4.0</junit-jupiter.version>
 
-    <main.verticle>xyz.jabwin.myVertX.vertx.verticles.HttpVerticle</main.verticle>
+    <main.verticle>xyz.jabwin.myVertX.vertx.verticles.http.HttpVerticle</main.verticle>
   </properties>
 
   <dependencyManagement>

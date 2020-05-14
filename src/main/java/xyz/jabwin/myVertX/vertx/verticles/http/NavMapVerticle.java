@@ -1,4 +1,4 @@
-package xyz.jabwin.myVertX.vertx.verticles;
+package xyz.jabwin.myVertX.vertx.verticles.http;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -13,6 +13,7 @@ import io.vertx.reactivex.ext.web.codec.BodyCodec;
 import lombok.extern.slf4j.Slf4j;
 import xyz.jabwin.myVertX.pojo.service.MapNavResults;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +29,15 @@ public class NavMapVerticle extends AbstractVerticle
 {
     private EventBus eventBus;
     private WebClient webClient;
+    public static final String ADDRESS = "NavMapVerticle";
+    private static final String MAP_KEY = "56a31478ee2bce15f8a289a854bb40c2";
 
     @Override
     public void start()
     {
         eventBus = vertx.eventBus();
         webClient = WebClient.create(vertx);
-        eventBus.consumer("/mapNav", this::mapNavResultsHandler);
+        eventBus.consumer(ADDRESS, this::mapNavResultsHandler);
     }
 
     public void mapNavResultsHandler(Message<JsonObject> message)
@@ -45,7 +48,7 @@ public class NavMapVerticle extends AbstractVerticle
                 .addQueryParam("origin", msgJson.getString("origin"))
                 .addQueryParam("destination", msgJson.getString("destination"))
                 .addQueryParam("strategy", "2")
-                .addQueryParam("key", "56a31478ee2bce15f8a289a854bb40c2")
+                .addQueryParam("key", MAP_KEY)
                 .as(BodyCodec.jsonObject())
                 .rxSend()
                 .subscribe(resp ->

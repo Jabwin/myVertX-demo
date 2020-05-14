@@ -1,6 +1,4 @@
-package xyz.jabwin.myVertX.vertx.verticles;
-
-import com.alibaba.fastjson.JSONObject;
+package xyz.jabwin.myVertX.vertx.verticles.http;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpMethod;
@@ -53,8 +51,8 @@ public class HttpVerticle extends AbstractVerticle
       }
       else startPromise.fail(http.cause());
     });
-    vertx.deployVerticle(DAVerticle::new, new DeploymentOptions().setWorker(true).setInstances(3));
-    vertx.deployVerticle(NavMapVerticle::new, new DeploymentOptions().setWorker(true));
+    vertx.deployVerticle(NavMapVerticle::new, new DeploymentOptions().setWorker(true).setInstances(2));
+    vertx.deployVerticle(RedisVerticle::new, new DeploymentOptions().setWorker(true));
   }
 
   private void invokeHandler(RoutingContext routingContext)
@@ -64,8 +62,7 @@ public class HttpVerticle extends AbstractVerticle
     ServerCarTypeAndPriceDto param = Json.decodeValue(routingContext.getBodyAsString(), ServerCarTypeAndPriceDto.class);
     invokeController
             .getServerCarTypeAndPrice(param)
-            .doOnSuccess(rr ->
-                    req.response().end(JSONObject.toJSONString(rr)))
+            .doOnSuccess(rr -> req.response().end(rr.toString()))
             .subscribe();
   }
 }

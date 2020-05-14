@@ -1,4 +1,4 @@
-package xyz.jabwin.myVertX.vertx.verticles;
+package xyz.jabwin.myVertX.vertx.verticles.http;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.AbstractVerticle;
@@ -25,8 +25,6 @@ public class NDAVeticle extends AbstractVerticle
     public void start()
     {
         eventBus = vertx.eventBus();
-
-        eventBus.consumer("/test", this::testHandler);
     }
 
     public void msgHandler(Message<JsonObject> msg)
@@ -52,15 +50,5 @@ public class NDAVeticle extends AbstractVerticle
                         connection.close();
                     });
         });
-    }
-
-
-
-    public void testHandler(Message<TCPMsg> msg)
-    {
-        msg.reply("ok");
-        log.info("22222");
-        TCPMsg tcpMsg = msg.body();
-        tcpMsg.getRoutingContext().response().end("asdjfklasjdk");
     }
 }
